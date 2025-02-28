@@ -1,15 +1,19 @@
+require('dotenv').config();
 const rateLimit = require('express-rate-limit');
 const { sendResponse } = require('../utils/responseUtils');
 
+const maxLoginAttempt = process.env.MAX_LOGIN_ATTEMPT;
+const loginTimeout = process.env.LOGIN_TIMEOUT;
+
 const requestLimiter = rateLimit({
-  windowMs: 1 * 60 * 1000,
-  max: 5,
+  windowMs: loginTimeout * 60 * 1000,
+  max: maxLoginAttempt,
   handler: (req, res) => {
     sendResponse(
       res,
       429,
       false,
-      'Too many login attempts, please try again after 1 minute',
+      `Too many login attempts, please try again after ${loginTimeout} minute(s)`,
     );
   },
 });
