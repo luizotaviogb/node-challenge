@@ -1,4 +1,5 @@
 const Product = require('../models/Product');
+const { buildProductQuery } = require('../utils/queryBuilder');
 
 const createProduct = async (name, value, code) => {
   const product = new Product({ name, value, code });
@@ -6,11 +7,11 @@ const createProduct = async (name, value, code) => {
   return product;
 };
 
-const getAllProducts = async (page = 1, pageSize = 10) => {
+const getAllProducts = async (page = 1, pageSize = 10, filters = {}) => {
   const skip = (page - 1) * pageSize;
-
-  const products = await Product.find().skip(skip).limit(pageSize);
-  const totalProducts = await Product.countDocuments();
+  const query = buildProductQuery(filters);
+  const products = await Product.find(query).skip(skip).limit(pageSize);
+  const totalProducts = await Product.countDocuments(query);
   const totalPages = Math.ceil(totalProducts / pageSize);
 
   return {

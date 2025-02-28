@@ -19,8 +19,19 @@ const getAllProducts = async (req, res) => {
   let pageSize = parseInt(req.query.pageSize) || 10;
   pageSize = validateLimit(pageSize, 100);
 
+  const filters = {
+    name: req.query.name,
+    value: req.query.value ? parseFloat(req.query.value) : undefined,
+    startDate: req.query.startDate,
+    endDate: req.query.endDate,
+  };
+
   try {
-    const paginationData = await productService.getAllProducts(page, pageSize);
+    const paginationData = await productService.getAllProducts(
+      page,
+      pageSize,
+      filters,
+    );
     sendResponse(
       res,
       200,
