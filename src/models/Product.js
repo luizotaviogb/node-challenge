@@ -7,6 +7,7 @@ const productSchema = new mongoose.Schema(
       required: true,
       minlength: [3, 'Name must be at least 3 characters long'],
       maxlength: [50, 'Name cannot be longer than 50 characters'],
+      index: true,
     },
     code: {
       type: String,
@@ -20,6 +21,7 @@ const productSchema = new mongoose.Schema(
       type: Number,
       required: true,
       min: [0, 'Value must be positive'],
+      index: true,
     },
   },
   {
@@ -33,5 +35,7 @@ const productSchema = new mongoose.Schema(
     },
   },
 );
+
+productSchema.index({ createdAt: 1 });
 
 module.exports = mongoose.model('Product', productSchema);
