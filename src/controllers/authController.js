@@ -1,28 +1,23 @@
-const User = require('../models/User');
-const jwtUtils = require('../utils/jwtUtils');
-const bcrypt = require('bcrypt');
+const authService = require('../services/authService');
 const { sendResponse } = require('../utils/responseUtils');
 
 const login = async (req, res) => {
   const { login, password } = req.body;
-  const user = await User.findOne({ login });
-  if (!user || !(await bcrypt.compare(password, user.password))) {
-    return sendResponse(res, 401, false, 'Invalid credentials');
-  }
 
-  const token = jwtUtils.generateToken(user._id);
-  sendResponse(res, 200, true, 'Login successful', { token });
+  try {
+    const { token } = await authService.loginUser(login, password);
+    sendResponse(res, 200, true, 'Login successful', { token });
+  } catch (error) {
+    sendResponse(res, 401, false, error.message);
+  }
 };
 
 const createUser = async (req, res) => {
   const { login, password } = req.body;
 
   try {
-    const user = new User({ login, password });
-    await user.save();
-    sendResponse(res, 201, true, 'User created successfully', {
-      login: user.login,
-    });
+    const user = await authService.createUser(login, password);
+    sendResponse(res, 201, true, 'User created successfully', user);
   } catch (error) {
     if (error.code === 11000) {
       return sendResponse(res, 409, false, 'Please choose a different login');
