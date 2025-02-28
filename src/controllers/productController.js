@@ -2,11 +2,11 @@ const productService = require('../services/productService');
 const { sendResponse } = require('../utils/responseUtils');
 const { validateLimit } = require('../utils/validateLimitUtils');
 
-const createProduct = async (req, res) => {
+const save = async (req, res) => {
   const { name, value, code } = req.body;
 
   try {
-    const product = await productService.createProduct(name, value, code);
+    const product = await productService.save(name, value, code);
     sendResponse(res, 201, true, 'Product created successfully', product);
   } catch (error) {
     console.error('Error saving product:', error);
@@ -14,7 +14,7 @@ const createProduct = async (req, res) => {
   }
 };
 
-const getAllProducts = async (req, res) => {
+const getAll = async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   let pageSize = parseInt(req.query.pageSize) || 10;
   pageSize = validateLimit(pageSize, 100);
@@ -27,11 +27,7 @@ const getAllProducts = async (req, res) => {
   };
 
   try {
-    const paginationData = await productService.getAllProducts(
-      page,
-      pageSize,
-      filters,
-    );
+    const paginationData = await productService.getAll(page, pageSize, filters);
     sendResponse(
       res,
       200,
@@ -52,11 +48,11 @@ const getAllProducts = async (req, res) => {
   }
 };
 
-const getProductById = async (req, res) => {
+const getByCode = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const product = await productService.getProductById(id);
+    const product = await productService.getByCode(id);
     sendResponse(res, 200, true, 'Product retrieved successfully', product);
   } catch (error) {
     if (error.message === 'Product not found') {
@@ -75,7 +71,7 @@ const getProductById = async (req, res) => {
 };
 
 module.exports = {
-  createProduct,
-  getAllProducts,
-  getProductById,
+  save,
+  getAll,
+  getByCode,
 };

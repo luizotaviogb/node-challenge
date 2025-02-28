@@ -1,22 +1,22 @@
 const authService = require('../services/authService');
 const { sendResponse } = require('../utils/responseUtils');
 
-const login = async (req, res) => {
+const authenticate = async (req, res) => {
   const { login, password } = req.body;
 
   try {
-    const { token } = await authService.loginUser(login, password);
+    const { token } = await authService.authenticate(login, password);
     sendResponse(res, 200, true, 'Login successful', { token });
   } catch (error) {
     sendResponse(res, 401, false, error.message);
   }
 };
 
-const createUser = async (req, res) => {
+const save = async (req, res) => {
   const { login, password } = req.body;
 
   try {
-    const user = await authService.createUser(login, password);
+    const user = await authService.save(login, password);
     sendResponse(res, 201, true, 'User created successfully', user);
   } catch (error) {
     if (error.code === 11000) {
@@ -28,6 +28,6 @@ const createUser = async (req, res) => {
 };
 
 module.exports = {
-  login,
-  createUser,
+  authenticate,
+  save,
 };

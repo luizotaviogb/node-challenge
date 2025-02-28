@@ -4,12 +4,12 @@ const validateRequiredFields = require('../middlewares/requestsMiddleware');
 
 const router = express.Router();
 
-router.get('/', productController.getAllProducts);
-router.get('/:id', productController.getProductById);
+router.get('/', productController.getAll);
+router.get('/:id', productController.getByCode);
 router.post(
   '/',
   validateRequiredFields(['name', 'value', 'code']),
-  productController.createProduct,
+  productController.save,
 );
 
 module.exports = router;

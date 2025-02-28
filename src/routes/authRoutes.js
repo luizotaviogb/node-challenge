@@ -9,12 +9,12 @@ router.post(
   '/login',
   validateRequiredFields(['login', 'password']),
   requestLimiter,
-  authController.login,
+  authController.authenticate,
 );
 router.post(
   '/register',
   validateRequiredFields(['login', 'password']),
-  authController.createUser,
+  authController.save,
 );
 
 module.exports = router;
