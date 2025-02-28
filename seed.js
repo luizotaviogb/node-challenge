@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const { faker } = require('@faker-js/faker');
 const Product = require('./src/models/Product');
+const User = require('./src/models/User');
+
 const connectDB = require('./src/config/db');
 
 const generateFakeProduct = () => {
@@ -20,6 +22,12 @@ const seedDatabase = async (quantity) => {
 
     await Product.insertMany(products);
     console.log(`${productCount} inserted.`);
+
+    const adminUser = {
+      login: 'admin',
+      password: 'admin',
+    };
+    await User.create(adminUser);
 
     await mongoose.connection.close();
     console.log('Connection closed.');
