@@ -1,11 +1,11 @@
-const Product = require('../models/Product');
+const productService = require('../services/productService');
 const { sendResponse } = require('../utils/responseUtils');
 
 const createProduct = async (req, res) => {
   const { name, value, code } = req.body;
+
   try {
-    const product = new Product({ name, value, code });
-    await product.save();
+    const product = await productService.createProduct(name, value, code);
     sendResponse(res, 201, true, 'Product created successfully', product);
   } catch (error) {
     console.error('Error saving product:', error);
@@ -14,27 +14,11 @@ const createProduct = async (req, res) => {
 };
 
 const getAllProducts = async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+
   try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
-
-    const skip = (page - 1) * limit;
-
-    const products = await Product.find().skip(skip).limit(limit);
-
-    const totalProducts = await Product.countDocuments();
-    const totalPages = Math.ceil(totalProducts / limit);
-
-    const paginationData = {
-      products,
-      pagination: {
-        currentPage: page,
-        totalPages,
-        totalProducts,
-        limit,
-      },
-    };
-
+    const paginationData = await productService.getAllProducts(page, limit);
     sendResponse(
       res,
       200,
@@ -57,13 +41,14 @@ const getAllProducts = async (req, res) => {
 
 const getProductById = async (req, res) => {
   const { id } = req.params;
+
   try {
-    const product = await Product.findOne({ code: id });
-    if (!product) {
-      return sendResponse(res, 404, false, 'Product not found');
-    }
+    const product = await productService.getProductById(id);
     sendResponse(res, 200, true, 'Product retrieved successfully', product);
   } catch (error) {
+    if (error.message === 'Product not found') {
+      return sendResponse(res, 404, false, error.message);
+    }
     console.error('Error searching for product:', error);
     sendResponse(
       res,
