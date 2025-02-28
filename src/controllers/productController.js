@@ -1,5 +1,6 @@
 const productService = require('../services/productService');
 const { sendResponse } = require('../utils/responseUtils');
+const { validateLimit } = require('../utils/validateLimitUtils');
 
 const createProduct = async (req, res) => {
   const { name, value, code } = req.body;
@@ -15,10 +16,11 @@ const createProduct = async (req, res) => {
 
 const getAllProducts = async (req, res) => {
   const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 10;
+  let pageSize = parseInt(req.query.pageSize) || 10;
+  pageSize = validateLimit(pageSize, 100);
 
   try {
-    const paginationData = await productService.getAllProducts(page, limit);
+    const paginationData = await productService.getAllProducts(page, pageSize);
     sendResponse(
       res,
       200,
