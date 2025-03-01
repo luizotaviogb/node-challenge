@@ -85,6 +85,7 @@ The package.json includes the following scripts:
 
 | Script                 | Description                                                                                   |
 | ---------------------- | --------------------------------------------------------------------------------------------- |
+| `node seed.js`         | Seeds the database with fake products and an admin user. Run `node seed.js [quantity]` to specify the number of products (default is 20). Requires Node.js and a running MongoDB instance. |
 | `npm run init`         | Installs dependencies, seeds the database, and starts the server. Use this for the first run. |
 | `npm run start`        | Starts the server using `node server.js`.                                                     |
 | `npm run test`         | Runs the test suite using Jest.                                                               |

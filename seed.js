@@ -20,8 +20,10 @@ const seedDatabase = async (quantity) => {
     const productCount = quantity || 20;
     const products = Array.from({ length: productCount }, generateFakeProduct);
 
+    await User.deleteMany({ login: 'admin' });
+
     await Product.insertMany(products);
-    console.info(`${productCount} inserted.`);
+    console.info(`${productCount} products inserted.`);
 
     const adminUser = {
       login: 'admin',
@@ -30,9 +32,9 @@ const seedDatabase = async (quantity) => {
     await User.create(adminUser);
 
     await mongoose.connection.close();
-    console.info('Connection closed.');
+    console.info('Connection closed and admin user created.');
   } catch (error) {
-    console.error('Err inserting seeds', error);
+    console.error('Error inserting seeds', error);
   }
 };
 
