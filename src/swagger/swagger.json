@@ -48,6 +48,13 @@
                   ]
                 }
               }
+            },
+            "example": {
+              "success": true,
+              "message": "User created successfully",
+              "data": {
+                "login": "newuser"
+              }
             }
           },
           "401": {
@@ -56,6 +63,10 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/BasicResponse"
+                },
+                "example": {
+                  "success": false,
+                  "message": "Invalid credentials"
                 }
               }
             }
@@ -97,6 +108,13 @@
                       }
                     }
                   ]
+                },
+                "example": {
+                  "success": true,
+                  "message": "User created successfully",
+                  "data": {
+                    "login": "newuser"
+                  }
                 }
               }
             }
@@ -107,6 +125,10 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/BasicResponse"
+                },
+                "example": {
+                  "success": false,
+                  "message": "Login already in use"
                 }
               }
             }
@@ -117,6 +139,11 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/BasicResponse"
+                },
+                "example": {
+                  "success": false,
+                  "message": "Error creating user",
+                  "error": "An unexpected error occurred"
                 }
               }
             }
@@ -128,6 +155,11 @@
       "get": {
         "summary": "Retrieve all products",
         "tags": ["Products"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "description": "Fetches a paginated list of products with optional filters.",
         "parameters": [
           {
@@ -221,6 +253,41 @@
                       }
                     }
                   ]
+                },
+                "example": {
+                  "success": true,
+                  "message": "Products retrieved successfully",
+                  "data": {
+                    "products": [
+                      {
+                        "name": "Laptop",
+                        "code": "LP123",
+                        "value": 1200,
+                        "createdAt": "2023-10-01T12:00:00Z",
+                        "updatedAt": "2023-10-01T12:00:00Z",
+                        "version": 1
+                      }
+                    ],
+                    "currentPage": 1,
+                    "totalProducts": 1,
+                    "totalPages": 1,
+                    "pageSize": 10
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BasicResponse"
+                },
+                "example": {
+                  "success": false,
+                  "message": "Unauthorized",
+                  "error": "Authentication required"
                 }
               }
             }
@@ -231,6 +298,11 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/BasicResponse"
+                },
+                "example": {
+                  "success": false,
+                  "message": "Error listing products",
+                  "error": "An unexpected error occurred"
                 }
               }
             }
@@ -240,6 +312,11 @@
       "post": {
         "summary": "Create a new product",
         "tags": ["Products"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "description": "Creates a new product with the provided details.",
         "requestBody": {
           "required": true,
@@ -263,6 +340,33 @@
                       "$ref": "#/components/schemas/ProductResponse"
                     }
                   }
+                },
+                "example": {
+                  "success": true,
+                  "message": "Product created successfully",
+                  "data": {
+                    "name": "Laptop",
+                    "code": "LP123",
+                    "value": 1200,
+                    "createdAt": "2023-10-01T12:00:00Z",
+                    "updatedAt": "2023-10-01T12:00:00Z",
+                    "version": 1
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BasicResponse"
+                },
+                "example": {
+                  "success": false,
+                  "message": "Unauthorized",
+                  "error": "Authentication required"
                 }
               }
             }
@@ -289,6 +393,11 @@
       "get": {
         "summary": "Retrieve a product by ID",
         "tags": ["Products"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "description": "Fetches a specific product by its ID.",
         "parameters": [
           {
@@ -307,12 +416,43 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BasicResponse",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/ProductResponse"
+                  "allOf": [
+                    { "$ref": "#/components/schemas/BasicResponse" },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/ProductResponse"
+                        }
+                      }
                     }
+                  ]
+                },
+                "example": {
+                  "success": true,
+                  "message": "Product retrieved successfully",
+                  "data": {
+                    "name": "Laptop",
+                    "code": "LP123",
+                    "value": 1200,
+                    "createdAt": "2023-10-01T12:00:00Z",
+                    "updatedAt": "2023-10-01T12:00:00Z",
+                    "version": 1
                   }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BasicResponse"
+                },
+                "example": {
+                  "success": false,
+                  "message": "Unauthorized",
+                  "error": "Authentication required"
                 }
               }
             }
@@ -350,6 +490,13 @@
     }
   },
   "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
     "schemas": {
       "BasicResponse": {
         "type": "object",
@@ -364,7 +511,8 @@
           },
           "data": {
             "type": "object",
-            "description": "The response data (if any)"
+            "description": "The response data (if any)",
+            "additionalProperties": false
           },
           "error": {
             "type": "string",
