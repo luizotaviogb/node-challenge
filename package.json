@@ -6,7 +6,9 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "init": "npm install && node seed.js && node server.js",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
