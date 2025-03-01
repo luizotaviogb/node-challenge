@@ -33,7 +33,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
+                  "oneOf": [
                     { "$ref": "#/components/schemas/BasicResponse" },
                     {
                       "properties": {
@@ -46,14 +46,28 @@
                       }
                     }
                   ]
+                },
+                "example": {
+                  "success": true,
+                  "message": "Login successful",
+                  "data": {
+                    "token": "123456789awertty"
+                  }
                 }
               }
-            },
-            "example": {
-              "success": true,
-              "message": "User created successfully",
-              "data": {
-                "login": "newuser"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BasicResponse"
+                },
+                "example": {
+                  "success": false,
+                  "message": "Missing required fields"
+                }
               }
             }
           },
@@ -95,7 +109,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
+                  "oneOf": [
                     { "$ref": "#/components/schemas/BasicResponse" },
                     {
                       "properties": {
@@ -115,6 +129,20 @@
                   "data": {
                     "login": "newuser"
                   }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BasicResponse"
+                },
+                "example": {
+                  "success": false,
+                  "message": "Missing required fields"
                 }
               }
             }
@@ -231,7 +259,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
+                  "oneOf": [
                     { "$ref": "#/components/schemas/BasicResponse" },
                     {
                       "properties": {
@@ -356,6 +384,20 @@
               }
             }
           },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BasicResponse"
+                },
+                "example": {
+                  "success": false,
+                  "message": "Missing required fields"
+                }
+              }
+            }
+          },
           "401": {
             "description": "Unauthorized",
             "content": {
@@ -416,7 +458,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
+                  "oneOf": [
                     { "$ref": "#/components/schemas/BasicResponse" },
                     {
                       "properties": {
