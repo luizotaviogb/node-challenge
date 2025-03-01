@@ -2,14 +2,17 @@
 
 ![Node.js](https://img.shields.io/badge/Node.js-v16+-green) ![MongoDB](https://img.shields.io/badge/MongoDB-v5+-yellow)
 
-A small REST API using Node.js (Express) and MongoDB.
+A lightweight REST API built with Node.js (Express) and MongoDB.
 
 ---
 
 ## Table of Contents
 
 - [Prerequisites](#prerequisites)
+- [Installation](#installation)
 - [Running the Project](#running-the-project)
+  - [Without Docker](#without-docker)
+  - [With Docker](#with-docker)
 - [Default User](#default-user)
 - [API Documentation](#api-documentation)
 - [Scripts](#scripts)
@@ -18,17 +21,18 @@ A small REST API using Node.js (Express) and MongoDB.
 
 ## Prerequisites
 
-To run this project, you need the following tools installed on your system:
+Ensure you have the following installed before running the project:
 
-- **MongoDB**: Version 5.0 or higher (a running MongoDB instance is required).
+- **MongoDB**: Version 5.0 or higher (a running instance is required).
 - **Node.js**: Version 16 or higher.
-- **npm**: Comes bundled with Node.js (ensure it's updated to the latest version).
+- **npm**: Bundled with Node.js (ensure it's updated to the latest version).
+- **Docker** (optional): Required if running the project with Docker.
 
 ---
 
 ## Installation
 
-Follow these steps after cloning the project:
+Follow these steps after cloning the repository:
 
 1. **Clone the repository**:
 
@@ -37,67 +41,96 @@ Follow these steps after cloning the project:
    cd node-challenge
    ```
 
-2. **Create a .env file**:
+2. **Create an environment configuration file**:
+
+   ```bash
+   cp .env.example .env
    ```
-       cp .env.example .env
-   ```
+
+---
 
 ## Running the Project
 
-1. **For the first time**
+### Without Docker
+
+#### First-time setup:
 
 ```bash
-    npm run init
+npm run init
 ```
 
-It's gonna install all the dependencies, create the database seeds and run the project
+This installs dependencies, seeds the database, and starts the project.
 
-2. **After first time**
+#### Subsequent runs:
 
 ```bash
-    npm run start
+npm run start
 ```
+
+### With Docker
+
+#### Build and start the containers:
+
+```bash
+docker-compose up --build
+```
+
+#### Stop the containers:
+
+```bash
+docker-compose down
+```
+
+---
 
 ## Default User
 
-A default user is created during the initial setup for testing purposes:
+A default admin user is created during the initial setup for testing:
 
 ```bash
-login: admin
-password: admin
+Login: admin
+Password: admin
 ```
 
-You can use these credentials to log in and test the authentication endpoints.
+Use these credentials to log in and test authentication endpoints.
+
+---
 
 ## API Documentation
 
-The project includes Swagger documentation for the API. Once the server is running, access it at:
+Swagger documentation is available after starting the server:
 
 ```bash
 http://localhost:3000/api-docs
 ```
 
-This provides an interactive interface to explore and test all available endpoints.
+This provides an interactive interface for exploring and testing API endpoints.
+
+---
 
 ## Scripts
 
-The package.json includes the following scripts:
+The `package.json` includes several scripts for managing the project:
 
-| Script                 | Description                                                                                   |
-| ---------------------- | --------------------------------------------------------------------------------------------- |
+| Script                 | Description                                                                                                                                                                                |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `node seed.js`         | Seeds the database with fake products and an admin user. Run `node seed.js [quantity]` to specify the number of products (default is 20). Requires Node.js and a running MongoDB instance. |
-| `npm run init`         | Installs dependencies, seeds the database, and starts the server. Use this for the first run. |
-| `npm run start`        | Starts the server using `node server.js`.                                                     |
-| `npm run test`         | Runs the test suite using Jest.                                                               |
-| `npm run lint`         | Runs ESLint to check for code style and potential errors in all files.                        |
-| `npm run lint:fix`     | Runs ESLint and automatically fixes fixable issues.                                           |
-| `npm run format`       | Formats all files using Prettier according to the defined configuration.                      |
-| `npm run format:check` | Checks if all files are formatted correctly with Prettier (no changes).                       |
+| `npm run init`         | Installs dependencies, seeds the database, and starts the server. Use this for the first run.                                                                                              |
+| `npm run start`        | Starts the server using `node server.js`.                                                                                                                                                  |
+| `npm run test`         | Runs the test suite using Jest.                                                                                                                                                            |
+| `npm run lint`         | Runs ESLint to check for code style and potential errors.                                                                                                                                  |
+| `npm run lint:fix`     | Runs ESLint and automatically fixes fixable issues.                                                                                                                                        |
+| `npm run format`       | Formats all files using Prettier according to the defined configuration.                                                                                                                   |
+| `npm run format:check` | Checks if all files are formatted correctly with Prettier (without making changes).                                                                                                        |
 
-Example usage:
+### Example usage:
 
 ```bash
 npm run lint       # Check linting
 npm run format     # Format code
 npm run test       # Run tests
 ```
+
+---
+
+Enjoy coding! 🚀
