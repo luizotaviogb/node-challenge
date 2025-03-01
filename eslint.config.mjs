@@ -5,7 +5,10 @@ import configPrettier from 'eslint-config-prettier';
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
-  { files: ['**/*.js'], languageOptions: { sourceType: 'commonjs' } },
+  {
+    files: ['**/*.js'],
+    languageOptions: { sourceType: 'commonjs' },
+  },
   { languageOptions: { globals: globals.node } },
   pluginJs.configs.recommended,
   configPrettier,
@@ -26,7 +29,7 @@ export default [
         },
       ],
       'no-console': ['warn', { allow: ['warn', 'error', 'info'] }],
-      'no-unused-vars': 'error',
+      'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       'space-before-function-paren': ['error', 'always'],
       'keyword-spacing': ['error', { before: true, after: true }],
       'brace-style': ['error', '1tbs', { allowSingleLine: true }],
@@ -49,5 +52,8 @@ export default [
         },
       ],
     },
+  },
+  {
+    ignores: ['**/*.test.js'],
   },
 ];
