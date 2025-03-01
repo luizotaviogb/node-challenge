@@ -22,7 +22,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/User"
+                "$ref": "#/components/schemas/UserRequest"
               }
             }
           }
@@ -33,23 +33,32 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": { "type": "boolean" },
-                    "message": { "type": "string" },
-                    "data": {
-                      "type": "object",
+                  "allOf": [
+                    { "$ref": "#/components/schemas/BasicResponse" },
+                    {
                       "properties": {
-                        "token": { "type": "string" }
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "token": { "type": "string" }
+                          }
+                        }
                       }
                     }
-                  }
+                  ]
                 }
               }
             }
           },
           "401": {
-            "description": "Invalid credentials"
+            "description": "Invalid credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BasicResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -64,7 +73,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/User"
+                "$ref": "#/components/schemas/UserRequest"
               }
             }
           }
@@ -75,16 +84,42 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/User"
+                  "allOf": [
+                    { "$ref": "#/components/schemas/BasicResponse" },
+                    {
+                      "properties": {
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "login": { "type": "string" }
+                          }
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
           },
           "409": {
-            "description": "Login already in use"
+            "description": "Login already in use",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BasicResponse"
+                }
+              }
+            }
           },
           "500": {
-            "description": "Error creating user"
+            "description": "Error creating user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BasicResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -164,30 +199,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": { "type": "boolean" },
-                    "message": { "type": "string" },
-                    "data": {
-                      "type": "object",
+                  "allOf": [
+                    { "$ref": "#/components/schemas/BasicResponse" },
+                    {
                       "properties": {
-                        "products": {
-                          "type": "array",
-                          "items": { "$ref": "#/components/schemas/Product" }
-                        },
-                        "currentPage": { "type": "integer" },
-                        "totalProducts": { "type": "integer" },
-                        "totalPages": { "type": "integer" },
-                        "pageSize": { "type": "integer" }
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "products": {
+                              "type": "array",
+                              "items": {
+                                "$ref": "#/components/schemas/ProductResponse"
+                              }
+                            },
+                            "currentPage": { "type": "integer" },
+                            "totalProducts": { "type": "integer" },
+                            "totalPages": { "type": "integer" },
+                            "pageSize": { "type": "integer" }
+                          }
+                        }
                       }
                     }
-                  }
+                  ]
                 }
               }
             }
           },
           "500": {
-            "description": "Error listing products"
+            "description": "Error listing products",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BasicResponse"
+                }
+              }
+            }
           }
         }
       },
@@ -211,18 +257,30 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
+                  "$ref": "#/components/schemas/BasicResponse",
                   "properties": {
-                    "success": { "type": "boolean" },
-                    "message": { "type": "string" },
-                    "data": { "$ref": "#/components/schemas/Product" }
+                    "data": {
+                      "$ref": "#/components/schemas/ProductResponse"
+                    }
                   }
                 }
               }
             }
           },
           "500": {
-            "description": "Error saving product"
+            "description": "Error saving product",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BasicResponse"
+                },
+                "example": {
+                  "success": false,
+                  "message": "Error saving product",
+                  "error": "An unexpected error occurred"
+                }
+              }
+            }
           }
         }
       }
@@ -249,21 +307,43 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
+                  "$ref": "#/components/schemas/BasicResponse",
                   "properties": {
-                    "success": { "type": "boolean" },
-                    "message": { "type": "string" },
-                    "data": { "$ref": "#/components/schemas/Product" }
+                    "data": {
+                      "$ref": "#/components/schemas/ProductResponse"
+                    }
                   }
                 }
               }
             }
           },
           "404": {
-            "description": "Product not found"
+            "description": "Product not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BasicResponse"
+                },
+                "example": {
+                  "success": false,
+                  "message": "Product not found"
+                }
+              }
+            }
           },
           "500": {
-            "description": "Error searching for product"
+            "description": "Error searching for product",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BasicResponse"
+                },
+                "example": {
+                  "success": false,
+                  "message": "Error"
+                }
+              }
+            }
           }
         }
       }
@@ -271,7 +351,29 @@
   },
   "components": {
     "schemas": {
-      "Product": {
+      "BasicResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indicates whether the request was successful"
+          },
+          "message": {
+            "type": "string",
+            "description": "A message describing the result of the request"
+          },
+          "data": {
+            "type": "object",
+            "description": "The response data (if any)"
+          },
+          "error": {
+            "type": "string",
+            "description": "Error details (if any)"
+          }
+        },
+        "required": ["success", "message"]
+      },
+      "ProductResponse": {
         "type": "object",
         "properties": {
           "name": {
@@ -333,7 +435,7 @@
         },
         "required": ["name", "code", "value"]
       },
-      "User": {
+      "UserRequest": {
         "type": "object",
         "properties": {
           "login": {
