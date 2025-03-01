@@ -5,6 +5,7 @@ const connectDB = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const productRoutes = require('./routes/productRoutes');
 const authMiddleware = require('./middlewares/authMiddleware');
+const slowDown = require('express-slow-down');
 
 const app = express();
 
@@ -18,6 +19,13 @@ const swaggerDocs = swaggerJsdoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use(express.json());
+const speedLimiter = slowDown({
+  windowMs: 15 * 60 * 1000,
+  delayAfter: 10,
+  delayMs: () => 2000,
+});
+
+app.use(speedLimiter);
 
 app.use('/auth', authRoutes);
 app.use('/products', authMiddleware, productRoutes);
