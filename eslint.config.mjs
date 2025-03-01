@@ -37,6 +37,17 @@ export default [
       'semi-style': ['error', 'last'],
       'no-multiple-empty-lines': ['error', { max: 1 }],
       'eol-last': ['error', 'always'],
+      'padding-line-between-statements': [
+        'error',
+        { blankLine: 'always', prev: 'function', next: 'function' },
+      ],
+      'lines-around-comment': [
+        'error',
+        {
+          beforeBlockComment: true,
+          allowBlockStart: true,
+        },
+      ],
     },
   },
 ];

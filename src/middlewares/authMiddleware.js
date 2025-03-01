@@ -2,9 +2,11 @@ const { sendResponse } = require('../utils/responseUtils');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-const JWT_SECRET = process.env.JWT_SECRET;
-
+/**
+ * Middleware used to verify if the request is authenticated
+ */
 const authMiddleware = (req, res, next) => {
+  const JWT_SECRET = process.env.JWT_SECRET;
   const token = req.header('Authorization')?.replace('Bearer ', '');
 
   if (!token) {

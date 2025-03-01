@@ -1,3 +1,6 @@
+/**
+ * Sends a standardized JSON response to the client.
+ */
 const sendResponse = (
   res,
   status,
