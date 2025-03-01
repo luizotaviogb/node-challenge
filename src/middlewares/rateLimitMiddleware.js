@@ -2,8 +2,8 @@ require('dotenv').config();
 const rateLimit = require('express-rate-limit');
 const { sendResponse } = require('../utils/responseUtils');
 
-const maxLoginAttempt = process.env.MAX_LOGIN_ATTEMPT;
-const loginTimeout = process.env.LOGIN_TIMEOUT;
+const maxLoginAttempt = parseInt(process.env.MAX_LOGIN_ATTEMPT, 10) || 5;
+const loginTimeout = parseInt(process.env.LOGIN_TIMEOUT, 10) || 1;
 
 /**
  * Used to control too many login requests
